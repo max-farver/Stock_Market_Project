@@ -1,19 +1,13 @@
 from flask import Flask, render_template, redirect
-# from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler
 import process, model, visuals
 
 
 app = Flask(__name__)
 
 
-# def update_all():
-#     process.retrieve_mains()
-#     visuals.create_mains()
-#     model.predict_mains()
-
-
-# scheduler = BlockingScheduler()
-# scheduler.add_job(update_all(), 'interval', hours=2)
+scheduler = BlockingScheduler()
+# scheduler.add_job(process.retrieve_mains(), 'interval', hours=2)
 # scheduler.start()
 
 
@@ -33,4 +27,4 @@ def hello_world():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
