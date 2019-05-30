@@ -10,7 +10,6 @@ scheduler = BlockingScheduler()
 # scheduler.add_job(process.retrieve_mains(), 'interval', hours=2)
 # scheduler.start()
 
-
 @app.route('/predictions')
 def predict():
    return render_template('model.html')
@@ -22,7 +21,7 @@ def live_charts():
 
 
 @app.route('/')
-def hello_world():
+def home():
     return render_template('index.html')
 
 
