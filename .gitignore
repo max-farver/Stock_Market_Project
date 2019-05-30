@@ -56,3 +56,12 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Jupyter
+.ipynb_checkpoints
+
+# VSCode
+.vscode
+
+# Config file
+config.txt

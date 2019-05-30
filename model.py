@@ -8,7 +8,7 @@ save models using joblib, overwriting old models with new ones
 
 '''
 
-def predict_mains():
+def model_mains():
     pass
 
 def model_choice():
