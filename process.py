@@ -12,11 +12,13 @@ import configparser
 
 ts = TimeSeries(key='1W79PCAA71QM8Q85', output_format='pandas')
 
-USER = configparser.get('SQL', 'USER')
-PASSWORD = configparser.get('SQL', 'PASSWORD')
-HOST = configparser.get('SQL', 'HOST')
-PORT = configparser.get('SQL', 'PORT')
-SCHEMA = configparser.get('SQL', 'SCHEMA')
+config = configparser.ConfigParser()
+config.read('config.txt')
+USER = config['SQL']['USER']
+PASSWORD = config['SQL']['PASSWORD']
+HOST = config['SQL']['HOST']
+PORT = config['SQL']['PORT']
+SCHEMA = config['SQL']['SCHEMA']
 
 engine = create_engine('mysql+mysqlconnector://'+ USER + ':'+ PASSWORD + \
     '@' + HOST + ':'+ PORT + '/' + SCHEMA, echo=False)
@@ -35,9 +37,9 @@ def process_mains():
     NVDA['Symbol'] = 'NVDA'
     DOW['Symbol'] = 'DOW'
 
-    AMD.to_sql('stocks_info', engine)
-    NVDA.to_sql('stocks_info', engine)
-    DOW.to_sql('stocks_info', engine)
+    AMD.to_sql('stocks_info', engine, if_exists='append')
+    NVDA.to_sql('stocks_info', engine, if_exists='append')
+    DOW.to_sql('stocks_info', engine, if_exists='append')
 
 
 '''

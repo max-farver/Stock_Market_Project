@@ -10,6 +10,7 @@ scheduler = BlockingScheduler()
 # scheduler.add_job(process.process_mains(), 'interval', days=1)
 # scheduler.start()
 
+
 @app.route('/predictions')
 def predict():
    return render_template('model.html')
