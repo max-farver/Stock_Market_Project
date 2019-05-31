@@ -10,6 +10,8 @@ from sqlalchemy import create_engine
 from alpha_vantage.timeseries import TimeSeries
 import configparser
 
+import model, app, visuals
+
 ts = TimeSeries(key='1W79PCAA71QM8Q85', output_format='pandas')
 
 config = configparser.ConfigParser()
@@ -41,10 +43,30 @@ def process_mains():
     NVDA.to_sql('stocks_info', engine, if_exists='append')
     DOW.to_sql('stocks_info', engine, if_exists='append')
 
+    AMD = preprocess(AMD)
+    NVDA = preprocess(NVDA)
+    DOW = preprocess(DOW)
+
+    AMD_model, NVDA_model, DOW_model = model.model_mains(AMD, NVDA, DOW)
+
+    AMD_pred = model.predict(AMD_model)
+    NVDA_pred = model.predict(NVDA_model)
+    DOW_pred = model.predict(DOW_model)
+
+    visuals.render_mains(AMD, NVDA, DOW, AMD_pred, NVDA_pred, DOW_pred)
+
 
 '''
 This function does the same as the previous, but for a single specified
 stock.
 '''
-def process_choice(stock_name):
-    pass
+def process_choice(stock_symbol):
+    data, _ = ts.get_intraday(symbol=stock_symbol,interval='1min', outputsize='full')
+    data['Symbol'] = stock_symbol
+    data.to_sql('stocks_info', engine, if_exists='append')
+
+    data = preprocess(data)
+    data_model = model.model_choice(data)
+    data_pred = model.predict_choice(data, data_model)
+    
+    visuals.render_choice(data, data_pred)
