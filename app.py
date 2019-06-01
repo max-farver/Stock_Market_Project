@@ -7,8 +7,15 @@ app = Flask(__name__)
 
 
 scheduler = BlockingScheduler()
-# scheduler.add_job(process.process_mains(), 'interval', days=1)
-# scheduler.start()
+scheduler.add_job(
+   process.process_mains(),
+   'cron',
+   day_of_week='mon-fri',
+   hour=9,
+   minute=30, 
+   end_date='2020-05-30'
+   )
+scheduler.start()
 
 
 @app.route('/predictions')
@@ -23,7 +30,6 @@ def live_charts():
 
 @app.route('/')
 def home():
-   process.process_mains()
    return render_template('index.html')
 
 
